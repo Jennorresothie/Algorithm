@@ -12,7 +12,7 @@ public class Main {
         int m = Integer.parseInt(st.nextToken());
 
         HashMap<String, Integer> nameMap = new HashMap<>();
-        String[] poket = new String[100001];
+        String[] poket = new String[n+1];
 
         String name;
         for(int i=1; i<=n; i++) {
