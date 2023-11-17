@@ -1,31 +1,23 @@
-import java.util.*;
 import java.io.*;
 
 public class Main {
+    private static boolean isVow(char c){
+        return c=='a'||c=='e'||c=='i'||c=='o'||c=='u';
+    }
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String s;
         s = br.readLine();
-        Set<Character> set = new HashSet<>();
-        set.add('a');
-        set.add('e');
-        set.add('i');
-        set.add('o');
-        set.add('u');
-        Set<String> set2 = new HashSet<>();
-        set2.add("ee");
-        set2.add("oo");
-
+       
         while (!s.equals("end")){
             boolean flag = false;
-            int cons, vow;
-            cons = vow = 0;
-            StringBuilder sb = new StringBuilder();
+            int cons, vow, i;
+            cons = vow = i = 0;
+            char prev = '0';
 
-            for(int i = 0; i < s.length(); i++) {
-                char c = s.charAt(i);
-                sb.append(c);
-                if(set.contains(c)){
+            for(char c : s.toCharArray()) {
+
+                if(isVow(c)){
                     flag = true;
                     cons ++;
                     vow = 0;
@@ -39,13 +31,12 @@ public class Main {
                     break;
                 }
 
-                if(sb.length()==2){
-                    if(sb.charAt(0)==sb.charAt(1)&&!set2.contains(sb.toString())){
-                        flag = false;
-                        break;
-                    }
-                    sb.deleteCharAt(0);
+                if(i>0&&prev==c&&!(prev=='e'||prev=='o')){
+                    flag = false;
+                    break;
                 }
+                prev = c;
+                i++;
             }
 
             if(flag) {
