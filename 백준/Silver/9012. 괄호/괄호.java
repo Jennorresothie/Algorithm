@@ -1,28 +1,24 @@
-import java.io.IOException;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.*;
 
 public class Main {
-    public static void main(String[] args) throws IOException{
-        BufferedReader br = new BufferedReader( new InputStreamReader(System.in));
-        int n = Integer.parseInt(br.readLine());
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        String[] g = new String[n];
-        for(int i=0;i<n;i++){
-            g[i] = br.readLine();
-        }
+        int testCase = Integer.parseInt(br.readLine());
 
-        for(int i=0;i<n;i++){
-            int flag=0;
-            for(int j=0;j<g[i].length();j++){
-                if(g[i].charAt(j)=='(')
-                    flag++;
-                else
-                    flag--;
-                if(flag<0)
+        for(int i=0; i<testCase; i++) {
+            String ps = br.readLine();
+            int ret = 0;
+
+            for(Character c : ps.toCharArray()){
+                if(c=='(')
+                    ret++;
+                else if(c==')')
+                    ret--;
+                if(ret<0)
                     break;
             }
-            System.out.println(flag==0?"YES":"NO");
+            System.out.println(ret==0?"YES":"NO");
         }
     }
 }
