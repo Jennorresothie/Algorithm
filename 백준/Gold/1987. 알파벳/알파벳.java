@@ -2,51 +2,43 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-    static int n, m, ret=0;
-    static char[][] map;
-    static boolean[][] visited;
-    static boolean[] alpa = new boolean[27];
+    static int r, c, ret, dire[][] = new int[][]{{1,0},{-1,0},{0,1},{0,-1}}, alpa;
+    static char box[][];
 
-    static int[][] dire = {{1,0},{-1,0},{0,1},{0,-1}};
+    static void dfs(int y, int x, int depth, int alpabet){
 
-    static void dfs(int y, int x, int depth) {
-        visited[y][x]=true;
-        alpa[map[y][x]-'A']=true;
+        ret = Math.max(depth, ret);
 
-        for(int i=0; i<4; i++) {
-            int nx = x + dire[i][0];
-            int ny = y + dire[i][1];
+        for(int i=0; i<4; i++){
+            int dx = x + dire[i][0];
+            int dy = y + dire[i][1];
 
-            if(nx<0||nx>=m||ny<0||ny>=n||visited[ny][nx]||alpa[map[ny][nx]-'A'])
+            if(dx<0||dx>=c||dy<0||dy>=r)
                 continue;
 
-            dfs(ny, nx, depth+1);
-            alpa[map[ny][nx]-'A']=false;
-            visited[ny][nx]=false;
+            int temp = 1<<box[dy][dx]-'A';
+            if((alpabet&temp)==0){
+                dfs(dy, dx, depth+1, alpabet|temp);
+            }
+
         }
 
-        if(ret<depth)
-            ret=depth;
+        return;
     }
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        n = Integer.parseInt(st.nextToken());
-        m = Integer.parseInt(st.nextToken());
+        r=Integer.parseInt(st.nextToken());
+        c=Integer.parseInt(st.nextToken());
 
-        map = new char[n][m];
-        visited = new boolean[n][m];
+        box = new char[r][c];
 
-        for(int i=0; i<n; i++){
-            String str = br.readLine();
-            map[i]=str.toCharArray();
-        }
+        for(int i=0; i<r; i++)
+            box[i]=br.readLine().toCharArray();
 
-        dfs(0,0,1);
-
+        dfs(0,0,1, 1<<box[0][0]-'A');
         System.out.println(ret);
-
     }
 }
