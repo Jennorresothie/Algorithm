@@ -13,21 +13,31 @@ public class Main {
             StringTokenizer st = new StringTokenizer(br.readLine());
             String command = st.nextToken();
 
-            if(command.charAt(1)=='l'){
-                s=(1<<20)-1;
-            }
-            else if(command.charAt(1)=='m') {
-                s=0;
-            }
-            else{
-                x = Integer.parseInt(st.nextToken());
-                if(command.charAt(1)=='d') s|=(1<<(x-1));
-
-                else if(command.charAt(1)=='e') s&=~(1<<(x-1));
-
-                else if(command.charAt(1)=='h') sb.append((s&(1<<(x-1)))>0?1:0).append('\n');
-
-                else if(command.charAt(1)=='o') s ^= (1<<(x-1));
+            switch(command.charAt(1)){
+                case 'd':
+                    x = Integer.parseInt(st.nextToken());
+                    s|=(1<<(x-1));
+                    break;
+                case 'e':
+                    x = Integer.parseInt(st.nextToken());
+                    s&=~(1<<(x-1));
+                    break;
+                case 'h':
+                    x = Integer.parseInt(st.nextToken());
+                    sb.append((s&(1<<(x-1)))>0?"1\n":"0\n");
+                    break;
+                case 'o':
+                    x = Integer.parseInt(st.nextToken());
+                    s ^= (1<<(x-1));
+                    break;
+                case 'l':
+                    s=(1<<20)-1;
+                    break;
+                case 'm':
+                    s=0;
+                    break;
+                default:
+                    break;
             }
         }
         System.out.println(sb);
