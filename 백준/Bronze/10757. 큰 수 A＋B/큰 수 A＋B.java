@@ -25,11 +25,10 @@ public class Main {
                 bSize--;
                 temp+=b.charAt(bSize)-'0';
             }
-            sb.append((char)((temp%10)+'0'));
-            temp /=10;
+            sb.append(temp%10);
+            temp /= 10;
         }
-        if(temp>0) sb.append((char)(temp+'0'));
-        sb.reverse();
-        System.out.println(sb.toString());
+        if(temp>0) sb.append(1);
+        System.out.println(sb.reverse());
     }
 }
