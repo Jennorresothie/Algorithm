@@ -7,23 +7,22 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
         StringBuilder sb = new StringBuilder();
 
-        String a,b;
-        a = st.nextToken();
-        b = st.nextToken();
+        char[] a = st.nextToken().toCharArray();
+        char[] b = st.nextToken().toCharArray();
 
-        int aSize = a.length();
-        int bSize = b.length();
+        int aSize = a.length;
+        int bSize = b.length;
         int temp = 0;
 
         while(aSize>0||bSize>0){
 
             if(aSize>0) {
                 aSize--;
-                temp+=a.charAt(aSize)-'0';
+                temp+=a[aSize]-'0';
             }
             if(bSize>0) {
                 bSize--;
-                temp+=b.charAt(bSize)-'0';
+                temp+=b[bSize]-'0';
             }
             sb.append(temp%10);
             temp /= 10;
