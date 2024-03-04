@@ -8,28 +8,15 @@ public class Main {
         int size = s.length();
 
         for(int i=0; i<size; i++) {
-            switch(s.charAt(i)) {
-                case 'p':
-                    if(i+1<size&&s.charAt(i+1)=='i')
-                        i++;
-                    else flag=false;
-                    break;
-                case 'k':
-                    if(i+1<size&&s.charAt(i+1)=='a')
-                        i++;
-                    else flag=false;
-                    break;
-                case 'c':
-                    if(i+2<size&&s.charAt(i+1)=='h'&&s.charAt(i+2)=='u')
-                        i+=2;
-                    else flag=false;
-                    break;
-                default:
-                    flag=false;
-                    break;
-            }
-            if(!flag)
+
+            if(i+1<size&& (s.substring(i, i+2).equals("pi")||s.substring(i,i+2).equals("ka")))
+                i++;
+            else if(i+2<size&& (s.substring(i,i+3).equals("chu")))
+                i+=2;
+            else{
+                flag=false;
                 break;
+            }
         }
         System.out.println(flag?"YES":"NO");
     }
