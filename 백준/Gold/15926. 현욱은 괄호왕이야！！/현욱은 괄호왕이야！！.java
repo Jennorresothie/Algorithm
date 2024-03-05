@@ -12,10 +12,8 @@ public class Main {
 
         for(int i=0; i<size; i++){
             if(chars[i]=='(') s.push(i);
-            else if(chars[i]==')'&&!s.empty()) {
-                check[s.pop()]=true;
-                check[i]=true;
-            }
+            else if(chars[i]==')'&&!s.empty())
+                check[s.pop()]=check[i]=true;
         }
 
         int cnt=0;
@@ -24,9 +22,9 @@ public class Main {
                 cnt++;
                 ret = Math.max(cnt,ret);
             }
-                
+
             else cnt=0;
-            
+
         }
 
         System.out.println(ret);
