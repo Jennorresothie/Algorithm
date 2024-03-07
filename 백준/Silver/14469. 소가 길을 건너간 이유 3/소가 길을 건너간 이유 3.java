@@ -6,10 +6,10 @@ public class Main {
         int ret=0, n, time=0;
         List<int[]> list = new ArrayList<>();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        n = stoi(br.readLine());
+        n = Integer.parseInt(br.readLine());
         for (int i=0; i<n; i++) {
             String[] num = br.readLine().split(" ");
-            list.add(new int[]{stoi(num[0]), stoi(num[1])});
+            list.add(new int[]{Integer.parseInt(num[0]), Integer.parseInt(num[1])});
         }
         Collections.sort(list, new Comparator<int[]>() {
             @Override
@@ -20,8 +20,5 @@ public class Main {
             else time += i[1];
         }
         System.out.println(time);
-    }
-    static int stoi(String s) {
-        return Integer.parseInt(s);
     }
 }
