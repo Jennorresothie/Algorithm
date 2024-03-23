@@ -5,7 +5,7 @@ public class Main {
     static int r, c, t, map[][], temp[][], airPuri[][], dire[][]={{-1,0},{0,1},{1,0},{0,-1}};
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         String[] strs;
 
         strs = br.readLine().split(" ");
@@ -48,7 +48,8 @@ public class Main {
 
         ret += 2;
 
-        System.out.println(ret);
+        bw.write(String.valueOf(ret));
+        bw.close();
     }
     static void diffusion() {
         // 초기화
