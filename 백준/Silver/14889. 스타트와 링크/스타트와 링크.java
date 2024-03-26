@@ -3,7 +3,7 @@ import java.io.*;
 public class Main {
 
     static final int INF = Integer.MAX_VALUE;
-    static int n, stat[][], team[][] = new int[2][10], ret=INF;
+    static int n, stat[][], team[][] = new int[2][11], ret=INF;
 
 
     static int compare(){
@@ -32,7 +32,15 @@ public class Main {
                 stat[i][j] = Integer.parseInt(strs[j]);
         }
 
+        long child=n, parent=n/2;
+        for(int i=1; i<n/2; i++){
+            child*=(n-i);
+            parent*=i;
+        }
+        int cnt=(int)(child/parent)/2;
+
         for(int i=0; i<(1<<n); i++) {
+            if(cnt==0) break;
             if(bitCheck(i)==n/2) {
                 int ind, arr, arr2;
                 ind = arr = arr2 = 0;
@@ -41,6 +49,7 @@ public class Main {
                     else team[1][arr2++] = ind++;
                 }
                 ret = Math.min(ret,compare());
+                cnt--;
             }
         }
         bw.write(String.valueOf(ret));
