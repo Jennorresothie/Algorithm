@@ -1,11 +1,70 @@
 import java.io.*;
 import java.util.*;
 public class Main {
-    static int n, m, k, arr[][], ret = Integer.MAX_VALUE, rotateArr[][] = new int[6][4];
+    static int n, m, k, arr[][], ret = Integer.MAX_VALUE, rotateArr[][] = new int[6][4], order[];
+    static int temp[][];
 
-    static int[][] rotate(int[][] map, int r, int c, int s) {
-        int[][] temp = new int[n][m];
-        for(int i=0; i<n; i++) temp[i] = Arrays.copyOf(map[i], m);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
+        k = Integer.parseInt(st.nextToken());
+
+        arr = new int[n][m];
+        order = new int[k];
+        temp = new int[n][m];
+
+        for(int i=0; i<n; i++) {
+            st = new StringTokenizer(br.readLine());
+            for(int j=0; j<m; j++) arr[i][j] = Integer.parseInt(st.nextToken());
+        }
+
+        for(int i=0; i<k; i++) {
+            st = new StringTokenizer(br.readLine());
+            for(int j=1; j<=3; j++) {
+                rotateArr[i][j] = Integer.parseInt(st.nextToken());
+                if(j<3)
+                    --rotateArr[i][j];
+            }
+        }
+        dfs(0);
+        bw.write(String.valueOf(ret));
+        bw.close();
+    }
+
+    static void dfs(int depth) {
+        if(depth>=k) {
+            copy();
+            for(int a: order) rotate(rotateArr[a][1], rotateArr[a][2], rotateArr[a][3]);
+            findArr();
+            return;
+        }
+
+        for(int i=0; i<k; i++) {
+            if(rotateArr[i][0]==1) continue;
+            rotateArr[i][0]=1;
+            order[depth] = i;
+            dfs(depth+1);
+            rotateArr[i][0]=0;
+        }
+    }
+
+    static void findArr() {
+        for(int i=0; i<n; i++) {
+            int sum=0;
+            for (int j=0; j<m; j++) sum+=temp[i][j];
+            ret = Math.min(sum, ret);
+        }
+    }
+
+    static void copy(){
+        for(int i=0; i<n; i++) temp[i] = Arrays.copyOf(arr[i], m);
+    }
+
+    static void rotate(int r, int c, int s) {
 
         int[] p1 = new int[]{r-s, c-s};
         int[] p4 = new int[]{r+s, c+s};
@@ -42,56 +101,5 @@ public class Main {
 
         }
 
-        return temp;
-    }
-    static void findArr(int[][] map) {
-        for(int i=0; i<n; i++) {
-            int sum=0;
-            for (int j=0; j<m; j++) sum+=map[i][j];
-            ret = Math.min(sum, ret);
-        }
-    }
-
-    static void dfs(int depth, int[][] map) {
-        if(depth>=k) {
-            findArr(map);
-            return;
-        }
-
-        for(int i=0; i<k; i++) {
-            if(rotateArr[i][0]==1) continue;
-            rotateArr[i][0]=1;
-            dfs(depth+1, rotate(map, rotateArr[i][1], rotateArr[i][2], rotateArr[i][3]));
-            rotateArr[i][0]=0;
-        }
-    }
-
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-
-        n = Integer.parseInt(st.nextToken());
-        m = Integer.parseInt(st.nextToken());
-        k = Integer.parseInt(st.nextToken());
-
-        arr = new int[n][m];
-
-        for(int i=0; i<n; i++) {
-            st = new StringTokenizer(br.readLine());
-            for(int j=0; j<m; j++) arr[i][j] = Integer.parseInt(st.nextToken());
-        }
-
-        for(int i=0; i<k; i++) {
-            st = new StringTokenizer(br.readLine());
-            for(int j=1; j<=3; j++) {
-                rotateArr[i][j] = Integer.parseInt(st.nextToken());
-                if(j<3)
-                    --rotateArr[i][j];
-            }
-        }
-        dfs(0, arr);
-        bw.write(String.valueOf(ret));
-        bw.close();
     }
 }
