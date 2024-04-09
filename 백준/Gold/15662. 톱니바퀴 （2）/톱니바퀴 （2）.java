@@ -2,7 +2,6 @@ import java.io.*;
 import java.util.*;
 public class Main {
     static int n, arr[], ret;
-    static boolean visited[];
     static Queue<int[]> q = new LinkedList<>();
     static void findL(int start, int rotate) {
         for(int pos = start; pos>0; pos--) {
@@ -32,9 +31,7 @@ public class Main {
 
         n = Integer.parseInt(br.readLine());
         arr = new int[n];
-        visited = new boolean[n];
-        for(int i=0; i<n; i++)
-            arr[i] = Integer.parseInt(br.readLine(),2);
+        for(int i=0; i<n; i++) arr[i] = Integer.parseInt(br.readLine(),2);
 
         int k = Integer.parseInt(br.readLine());
         List<int[]> list = new ArrayList<>();
@@ -62,23 +59,18 @@ public class Main {
         bw.write(String.valueOf(ret));
         bw.close();
     }
-    static void turn1(int n) { //시계반대
+    static void turn1(int n) {
         int t = arr[n];
         t=t<<1;
-        if((arr[n]&(1<<7))>1)
-            t |= 1;
-
+        if((arr[n]&(1<<7))>1) t |= 1;
         t &= ~(1<<8);
-
         arr[n] = t;
     }
 
-    static void turn(int n) { // 시계반향
+    static void turn(int n) {
         int t = arr[n];
         t=t>>1;
-        if((arr[n]&1)>0)
-            t |= (1<<7);
-
+        if((arr[n]&1)>0) t |= (1<<7);
         arr[n] = t;
     }
 }
