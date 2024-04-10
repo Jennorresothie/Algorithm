@@ -25,14 +25,12 @@ public class Main {
 
         int pre=0;
         for(int[] dump : list) {
-            int start = dump[0];
-            int end = dump[1];
-            if(pre<start)
-                pre = start;
-            while(pre<end) {
-                pre+=l;
-                ret++;
-            }
+            if(pre>=dump[1]) continue;
+            int start = pre>dump[0]?pre:dump[0];
+            int a = (dump[1]-start)/l + ((dump[1]-start)%l>0?1:0);
+            ret += a;
+            pre = start + a*l;
+
         }
         bw.write(String.valueOf(ret));
         bw.close();
