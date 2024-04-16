@@ -1,10 +1,9 @@
 import java.io.*;
-import java.util.*;
 public class Main {
     static class LinkNode {
         int score;
-        LinkNode redNext;
-        LinkNode blueNext;
+        LinkNode redLine;
+        LinkNode blueLine;
         boolean isHorse;
 
         public LinkNode(int score){
@@ -13,19 +12,60 @@ public class Main {
     }
 
     static class Horse {
-        boolean isDone;
-        LinkNode nodeInd = startNode;
+        boolean isFinish;
+        LinkNode 현재위치 = startNode;
     }
 
     static LinkNode startNode, endNode;
-    static Horse horse[] = new Horse[4];
     static int dices[] = new int[10], ret;
-    static void makeBlueNext(LinkNode start, LinkNode end, int step, int cnt) {
-        for(int i=0; i<cnt; i++) {
-            start.redNext = new LinkNode(start.score+step);
-            start = start.redNext;
+    static Horse[] horses = new Horse[4];
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        startNode = new LinkNode(1);
+        endNode = new LinkNode(0);
+        LinkNode crossNode = new LinkNode(25);
+
+        // 초기화
+        LinkNode 이전노드 = startNode;
+        for(int i=1; i<21; i++) {
+            이전노드.redLine = new LinkNode(i*2);
+
+            if(i==6) {
+                이전노드.blueLine = new LinkNode(13);
+                makeLine(이전노드.blueLine, crossNode, 3, 2);
+            }
+            else if(i==11) {
+                이전노드.blueLine = new LinkNode(22);
+                makeLine(이전노드.blueLine, crossNode, 2, 1);
+            }
+            else if(i==16) {
+                이전노드.blueLine = new LinkNode(28);
+                makeLine(이전노드.blueLine, crossNode, -1, 2);
+            }
+            이전노드 = 이전노드.redLine;
         }
-        start.redNext = end;
+        makeLine(crossNode, 이전노드, 5, 2);
+        이전노드.redLine = endNode;
+
+        for(int i=0; i<4; i++) horses[i] = new Horse();
+
+        String[] strs = br.readLine().split(" ");
+        for(int i=0; i<10; i++) dices[i] = Integer.parseInt(strs[i]);
+
+        permutation(0, 0);
+        bw.write(String.valueOf(ret));
+        bw.close();
+
+    }
+
+    static void makeLine(LinkNode cur, LinkNode end, int step, int cnt) {
+        for(int i=0; i<cnt; i++) {
+            cur.redLine = new LinkNode(cur.score+step);
+            cur = cur.redLine;
+        }
+        cur.redLine = end;
     }
 
     static void permutation(int depth, int sum) {
@@ -35,71 +75,35 @@ public class Main {
         }
 
         for(int i=0; i<4; i++) {
-            if(horse[i].isDone) continue;
-            LinkNode temp = horse[i].nodeInd;
-            for(int j=0; j<dices[depth]; j++) {
-                if(j==0&&temp.blueNext!=null)
-                    temp = temp.blueNext;
-                else
-                    temp = temp.redNext;
+            if(horses[i].isFinish) continue;
 
-                if(temp.equals(endNode)) break;
+            LinkNode temp = horses[i].현재위치;
+
+            for(int j=0; j<dices[depth]; j++) { // 말 이동
+                if(j==0&&temp.blueLine!=null) temp = temp.blueLine;
+                else temp = temp.redLine;
+
+                if(temp == endNode) break;
             }
-            if(temp != endNode && temp.isHorse==true) continue;
 
-            boolean isDone = horse[i].isDone;
-            if(temp.equals(endNode)) horse[i].isDone=true;
+            if(temp != endNode && temp.isHorse) continue; // 말 이동후 말 겹치는지 확인
 
-            LinkNode cur = horse[i].nodeInd;
-            cur.isHorse = false;
+            // 말 이동 후 작업
+            boolean 도착상태저장 = horses[i].isFinish;
+            if(temp==endNode) horses[i].isFinish = true;
+
+            // 이동 처리 - 현재 위치 표시 지우고 이동한 곳 표시
+            LinkNode current = horses[i].현재위치;
+            current.isHorse = false;
             temp.isHorse = true;
-            horse[i].nodeInd = temp;
+            horses[i].현재위치 = temp;
 
             permutation(depth+1, sum + temp.score);
 
-            horse[i].isDone = isDone;
-            horse[i].nodeInd = cur;
-            cur.isHorse = true;
+            horses[i].isFinish = 도착상태저장;
+            horses[i].현재위치 = current;
+            current.isHorse = true;
             temp.isHorse = false;
         }
-    }
-
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        startNode = new LinkNode(0);
-        endNode = new LinkNode(0);
-        LinkNode crossNode = new LinkNode(25);
-
-        LinkNode pre = startNode;
-        for(int i=1; i<=20; i++) {
-            pre.redNext = new LinkNode(i*2);
-
-            if(i==6) {
-                pre.blueNext = new LinkNode(13);
-                makeBlueNext(pre.blueNext, crossNode, 3, 2);
-            }
-            else if(i==11){
-                pre.blueNext = new LinkNode(22);
-                makeBlueNext(pre.blueNext, crossNode, 2, 1);
-            }
-            else if(i==16){
-                pre.blueNext = new LinkNode(28);
-                makeBlueNext(pre.blueNext, crossNode, -1, 2);
-            }
-            pre = pre.redNext;
-        }
-        makeBlueNext(crossNode, pre, 5,2);
-        pre.redNext = endNode;
-
-        for(int i=0; i<horse.length; i++) horse[i] = new Horse();
-
-        String[] strs = br.readLine().split(" ");
-        for(int i=0; i<10; i++) dices[i] = Integer.parseInt(strs[i]);
-
-        permutation(0, 0);
-        bw.write(String.valueOf(ret));
-        bw.close();
-
     }
 }
