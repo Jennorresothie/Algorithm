@@ -30,8 +30,7 @@ public class Main {
         for(int i=1; i<=size; i++) {
             for(int j=i; j<=size+i-1; j++) {
                 int temp = arr[j] - arr[j-i];
-                if(temp>p) continue;
-                cnt[temp]++;
+                if(temp <=p) cnt[temp]++;
                 if(size==i)break;
             }
         }
