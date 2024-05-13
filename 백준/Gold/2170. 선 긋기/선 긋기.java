@@ -16,16 +16,15 @@ public class Main {
         Collections.sort(nodes);
 
         int st, end;
-        st = nodes.get(0).st;
-        end = nodes.get(0).end;
-        for(int i=1; i<n; i++) {
-            if(end<nodes.get(i).st) {
+        st = end = Integer.MIN_VALUE;
+        for(Node node : nodes) {
+            if(end<node.st) {
                 ret += end - st;
-                st = nodes.get(i).st;
-                end = nodes.get(i).end;
+                st = node.st;
+                end = node.end;
             }
-            else if(end<nodes.get(i).end)
-                end = nodes.get(i).end;
+            else if(end< node.end)
+                end = node.end;
         }
         ret += end - st;
         bw.write(String.valueOf(ret));
