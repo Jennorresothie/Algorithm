@@ -5,35 +5,45 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         int n, ret=0;
-        List<int[]> list = new ArrayList<>();
+        List<Node> nodes = new ArrayList<>();
         n = Integer.parseInt(br.readLine());
         for(int i=0; i<n; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
             int x = Integer.parseInt(st.nextToken());
             int y = Integer.parseInt(st.nextToken());
-            list.add(new int[]{x,y});
+            nodes.add(new Node(x, y));
         }
-        list.sort(new Comparator<int[]> (){
-            @Override
-            public int compare(int[] a, int[] b) {
-                return a[0]-b[0];
-            }
-        });
+        Collections.sort(nodes);
 
         int st, end;
-        st = list.get(0)[0];
-        end = list.get(0)[1];
+        st = nodes.get(0).st;
+        end = nodes.get(0).end;
         for(int i=1; i<n; i++) {
-            if(end<list.get(i)[0]) {
+            if(end<nodes.get(i).st) {
                 ret += end - st;
-                st = list.get(i)[0];
-                end = list.get(i)[1];
+                st = nodes.get(i).st;
+                end = nodes.get(i).end;
             }
-            else if(end<list.get(i)[1])
-                end = list.get(i)[1];
+            else if(end<nodes.get(i).end)
+                end = nodes.get(i).end;
         }
         ret += end - st;
         bw.write(String.valueOf(ret));
         bw.close();
+    }
+
+    static class Node implements Comparable<Node> {
+        int st;
+        int end;
+
+        public Node(int x, int y) {
+            this.st = x;
+            this.end = y;
+        }
+
+        @Override
+        public int compareTo(Node n) {
+            return this.st - n.st;
+        }
     }
 }
