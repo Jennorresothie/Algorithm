@@ -1,12 +1,13 @@
 import java.io.*;
 import java.util.*;
 public class Main {
+    static int child, jewelry, j[], l, r, mid, ret=Integer.MAX_VALUE;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int child, jewelry, j[], l, r, mid, ret=Integer.MAX_VALUE;
-        mid = l = r = 1;
+        
+        l = r = 1;
         child = Integer.parseInt(st.nextToken());
         jewelry = Integer.parseInt(st.nextToken());
         j = new int[jewelry];
