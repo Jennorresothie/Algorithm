@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 public class Main {
-    static int child, jewelry, j[], l, r, mid, ret=Integer.MAX_VALUE;
+    static int child, jewelry, j[], l, r, mid;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -15,7 +15,7 @@ public class Main {
             j[i] = Integer.parseInt(br.readLine());
             if(r<j[i]) r = j[i];
         }
-        while(l<=r) {
+        while(l<r) {
             mid = (l+r) / 2;
             int cnt = 0;
             for (int i : j) {
@@ -23,12 +23,9 @@ public class Main {
                 if(i%mid>0) cnt++;
             }
             if(cnt>child) l = mid+1;
-            else {
-                r = mid-1;
-                if(ret>mid) ret = mid;
-            }
+            else r = mid;
         }
-        bw.write(String.valueOf(ret));
+        bw.write(String.valueOf(r));
         bw.close();
     }
 }
