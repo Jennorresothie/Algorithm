@@ -1,10 +1,10 @@
 import java.io.*;
 import java.util.StringTokenizer;
 public class Main {
+    static int n, m, videos[], l, r;
     public static void main(String[] args)throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        int n, m, videos[], l=1, r=0;
         StringTokenizer st = new StringTokenizer(br.readLine());
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
