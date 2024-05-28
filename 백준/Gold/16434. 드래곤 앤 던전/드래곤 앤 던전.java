@@ -32,7 +32,7 @@ public class Main {
 
         for(int[] room : list) {
             if(room[0]==1) {
-                long damage = (room[2]%Atk==0?room[2]/Atk:(room[2]/Atk)+1)-1;
+                long damage = room[2]%Atk==0?(room[2]/Atk)-1:room[2]/Atk;
                 hp -= (damage*room[1]);
                 if(hp<=0) return false;
             }
