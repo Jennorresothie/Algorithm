@@ -1,57 +1,61 @@
 import java.util.*;
 class Solution {
-    int visited[][];
-    int n, m, end[];
-    Queue<int[]> q = new LinkedList<>();
+    int n, m, visit[][], ex, ey, sx, sy;
     public int solution(String[] board) {
-        int answer = 0;
+        int answer = -1;
         n = board.length;
         m = board[0].length();
-        visited = new int[n][m];
-
+        visit = new int[n][m]; 
         for(int i=0; i<n; i++) {
             for(int j=0; j<m; j++) {
-                if(board[i].charAt(j)=='R') {
-                    q.add(new int[]{i,j});
-                    visited[i][j] = 1;
+                char c = board[i].charAt(j);
+                if(c=='R') {
+                    sx = j;
+                    sy = i;
                 }
-                else if(board[i].charAt(j)=='G') 
-                    end = new int[]{i, j};
-                
-                else if(board[i].charAt(j)=='D')
-                    visited[i][j] = -1;
+                else if(c=='G') {
+                    ey = i;
+                    ex = j;
+                }
+                else if(c=='D')
+                    visit[i][j] = -1;
             }
         }
         
-        if(bfs()) answer = visited[end[0]][end[1]] - 1; 
-        else answer = -1;
+        if(bfs(sx, sy)) answer=visit[ey][ex]-1;
+        
         
         return answer;
     }
     
-    boolean bfs() {
-        int dire[][] = {{1,0},{-1,0},{0,1},{0,-1}};
-        while(!q.isEmpty()){
-            int cur[] = q.poll();
+    boolean bfs(int x, int y) {
+        int dire[][] = {{-1,0},{0,1},{0,-1},{1,0}};
+        Queue<int[]> q = new LinkedList<>();
+        q.add(new int[]{y, x});
+        visit[y][x] = 1;
+        
+        while(!q.isEmpty()) {
+            int[] cur = q.poll();
             
             for(int i=0; i<4; i++) {
-                int dy = cur[0];
-                int dx = cur[1];
+                int nx = cur[1];
+                int ny = cur[0];
                 
-                while(!(dx<0||dx>=m||dy<0||dy>=n) && !(visited[dy][dx]==-1)) {
-                    dy += dire[i][0];
-                    dx += dire[i][1];
+                while((nx>-1&&nx<m&&ny>-1&&ny<n) && !(visit[ny][nx]==-1)) {
+                    nx += dire[i][1];
+                    ny += dire[i][0];
                 }
-                dy -= dire[i][0];
-                dx -= dire[i][1];
                 
-                if((cur[0]==dy&&cur[1]==dx)||visited[dy][dx]>0) continue;
-                q.add(new int[]{dy, dx});
-                visited[dy][dx] = visited[cur[0]][cur[1]] + 1;
-                if((end[0]==dy)&&(end[1]==dx)) return true;
+                nx -= dire[i][1];
+                ny -= dire[i][0];
+                
+                if(visit[ny][nx]>0) continue;
+                
+                q.add(new int[]{ny, nx});
+                visit[ny][nx] = visit[cur[0]][cur[1]] + 1;
+                if(ny==ey&&nx==ex) return true;
             }
         }
         return false;
     }
-    
 }
