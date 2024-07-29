@@ -36,18 +36,18 @@ public class Main {
         }
 
         int len  = list.size() - 1;
-        Deque<Integer> dq = new ArrayDeque<>();
+        int arr2[] = new int[len];
         sb.append(len).append("\n");
         for(int i=n-1; i>-1; i--) {
             if(len == arr[i]) {
                 len--;
-                dq.addFirst(nums[i]);
+                arr2[len] = nums[i];
             }
         }
 
-        while (!dq.isEmpty()) {
-            sb.append(dq.pop()).append(" ");
-        }
+        for(int i : arr2)
+            sb.append(i).append(" ");
+
         bw.write(sb.toString());
         bw.close();
     }
