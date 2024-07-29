@@ -2,20 +2,20 @@ import java.util.*;
 import java.io.*;
 public class Main {
     // LIS
+    static int n, arr[], arr2[], nums[], ind, len;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringBuilder sb = new StringBuilder();
-        int n = Integer.parseInt(br.readLine());
+        n = Integer.parseInt(br.readLine());
         StringTokenizer st = new StringTokenizer(br.readLine());
         List<Integer> list = new ArrayList<>(); // 현재 몇번째 큰 수 인가 판별용
-        int arr[] = new int[n]; // 크기 저장용
-        int nums[] = new int[n];
+        arr = new int[n]; // 크기 저장용
+        nums = new int[n];
         for (int i=0; i<n; i++){
             nums[i] = Integer.parseInt(st.nextToken());
         }
         list.add(0);
-        int ind = 0;
         for (int e : nums) {
             if(list.size()==1||list.get(list.size()-1)<e) { // 큰 값이면 그냥 넣기
                 list.add(e);
@@ -35,8 +35,8 @@ public class Main {
             }
         }
 
-        int len  = list.size() - 1;
-        int arr2[] = new int[len];
+        len  = list.size() - 1;
+        arr2 = new int[len];
         sb.append(len).append("\n");
         for(int i=n-1; i>-1; i--) {
             if(len == arr[i]) {
@@ -49,6 +49,7 @@ public class Main {
             sb.append(i).append(" ");
 
         bw.write(sb.toString());
+        bw.flush();
         bw.close();
     }
 }
