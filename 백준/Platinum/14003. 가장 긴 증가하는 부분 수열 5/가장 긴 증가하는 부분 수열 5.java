@@ -37,7 +37,7 @@ public class Main {
 
         int len  = list.size() - 1;
         Deque<Integer> dq = new ArrayDeque<>();
-        sb.append(len + "\n");
+        sb.append(len).append("\n");
         for(int i=n-1; i>-1; i--) {
             if(len == arr[i]) {
                 len--;
@@ -46,7 +46,7 @@ public class Main {
         }
 
         while (!dq.isEmpty()) {
-            sb.append(dq.pop() + " ");
+            sb.append(dq.pop()).append(" ");
         }
         bw.write(sb.toString());
         bw.close();
