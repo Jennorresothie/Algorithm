@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 public class Main {
     static int n, map[][], dp[][];
-    static final int INF = 987654321;
+    static final int INF = 16000000 ;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -20,12 +20,9 @@ public class Main {
         bw.close();
     }
     static int tsp(int cur, int visited) {
-        if(visited == (1<<n)-1){
+        if(visited == (1<<n)-1)
             // cur -> 0(출발도시)로 가는 경로가 존재해야 돌아갈 수 있음
-            if(map[cur][0]>0) return map[cur][0];
-            return INF;
-        }
-            
+            return map[cur][0]!=0 ? map[cur][0]:INF; 
 
         if(dp[cur][visited] > 0) return dp[cur][visited];
 
