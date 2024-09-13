@@ -16,10 +16,8 @@ public class Main {
 
         for(int i=0; i<n; i++) {
             int energy = list[0][i];
-            for(int j=100; j>0; j--) {
-                if(energy>=j) break;
+            for(int j=100; j>energy; j--) 
                 dp[j] = Math.max(dp[j], dp[j-energy]+list[1][i]);
-            }
         }
 
         bw.write(dp[100]+"");
