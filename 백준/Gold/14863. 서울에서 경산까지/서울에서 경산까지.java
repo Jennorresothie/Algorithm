@@ -22,7 +22,7 @@ public class Main {
             bike[i][0] = Integer.parseInt(st.nextToken());
             bike[i][1] = Integer.parseInt(st.nextToken());
 
-            Arrays.fill(dp[i],-234567891);
+            Arrays.fill(dp[i],-987654321);
         }
 
         bw.write(go(0,0)+"");
@@ -32,7 +32,7 @@ public class Main {
     }
     static int go(int city, int time){
         if(city==n) return 0;
-        if(dp[city][time]>0) return dp[city][time];
+        if(dp[city][time]>-987654321) return dp[city][time];
 
         if(time+walk[city][0]<=k) dp[city][time] = Math.max(dp[city][time], go(city+1, time+walk[city][0])+walk[city][1]);
         if(time+bike[city][0]<=k) dp[city][time] = Math.max(dp[city][time], go(city+1, time+bike[city][0])+bike[city][1]);
