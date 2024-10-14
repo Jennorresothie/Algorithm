@@ -5,6 +5,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        // 1480
         StringTokenizer st = new StringTokenizer(br.readLine());
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
@@ -16,24 +17,24 @@ public class Main {
         for (int i=0; i<n; i++) arr[i] = Integer.parseInt(st.nextToken());
 
         bw.write(go(0,0,0)+"");
+        bw.flush();
         bw.close();
         br.close();
     }
+    static int go (int bag, int N, int cap) {
+        if(bag==m) return 0;
+        if(dp[bag][N][cap]!=0) return dp[bag][N][cap];
 
-    static int go (int bag, int jewelry, int capacity) {
-        if(bag == m) return 0;
-        if(dp[bag][jewelry][capacity]!=0) return dp[bag][jewelry][capacity];
+        dp[bag][N][cap] = Math.max(dp[bag][N][cap], go(bag+1, N, 0));
 
-        // 다음 가방으로 넘어감
-        dp[bag][jewelry][capacity] = Math.max(dp[bag][jewelry][capacity], go(bag+1, jewelry, 0));
-
-        // 가방에 넣지 않음음
-       for(int i=0; i<n; i++) {
-            if(((1<<i) & jewelry) > 0) continue;
-            if(capacity+arr[i]>c) continue;
-            dp[bag][jewelry][capacity] = Math.max(dp[bag][jewelry][capacity], go(bag, jewelry | (1<<i), capacity+arr[i]) + 1);
+        for (int i=0; i<n; i++) {
+            // 1. 보석 확인
+            if(((1<<i)&N)>0) continue;
+            // 2. 가방 무게 확인
+            if(cap+arr[i]>c) continue;
+            dp[bag][N][cap] = Math.max(dp[bag][N][cap], go(bag, (1<<i) | N, cap+arr[i])+1);
         }
 
-        return dp[bag][jewelry][capacity];
+        return dp[bag][N][cap];
     }
 }
