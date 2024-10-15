@@ -1,17 +1,19 @@
 import java.io.*;
-import java.util.*;
+import java.util.StringTokenizer;
+
 public class Main {
     static int n, m, c, arr[], dp[][][];
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        // 1480
+
         StringTokenizer st = new StringTokenizer(br.readLine());
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
         c = Integer.parseInt(st.nextToken());
+
         arr = new int[n];
-        dp = new int[m][1<<n][c+1];
+        dp = new int[m][1<<n][c+1]; //[m번째 가방][보석][m번째 가방 용량]
 
         st = new StringTokenizer(br.readLine());
         for (int i=0; i<n; i++) arr[i] = Integer.parseInt(st.nextToken());
@@ -21,20 +23,21 @@ public class Main {
         bw.close();
         br.close();
     }
-    static int go (int bag, int N, int cap) {
+    static int go(int bag, int taken, int capa) {
+        // 종료 조건
         if(bag==m) return 0;
-        if(dp[bag][N][cap]!=0) return dp[bag][N][cap];
+        if(dp[bag][taken][capa]!=0) return dp[bag][taken][capa];
 
-        dp[bag][N][cap] = Math.max(dp[bag][N][cap], go(bag+1, N, 0));
+        // 현재 가방에 보석 안 넣기
+        dp[bag][taken][capa] = Math.max(dp[bag][taken][capa], go(bag+1, taken, 0));
 
+        // 넣기
         for (int i=0; i<n; i++) {
-            // 1. 보석 확인
-            if(((1<<i)&N)>0) continue;
-            // 2. 가방 무게 확인
-            if(cap+arr[i]>c) continue;
-            dp[bag][N][cap] = Math.max(dp[bag][N][cap], go(bag, (1<<i) | N, cap+arr[i])+1);
+            if((taken&(1<<i))>0) continue; // 가방에 넣은 보석인지 확인
+            if(capa+arr[i]>c) continue; // 용량 넘어가는 확인
+            dp[bag][taken][capa] = Math.max(dp[bag][taken][capa], go(bag, taken | (1<<i), capa+arr[i]) + 1);
         }
 
-        return dp[bag][N][cap];
+        return dp[bag][taken][capa];
     }
 }
