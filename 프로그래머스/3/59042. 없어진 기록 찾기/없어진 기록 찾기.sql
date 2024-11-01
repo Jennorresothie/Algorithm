@@ -1,8 +1,5 @@
 -- 코드를 입력하세요
-SELECT o.animal_id, o.name
-from 
-ANIMAL_INS as i
-right join
-ANIMAL_OUTS as o
-on i.animal_id = o.animal_id
-where i.animal_id is null
+SELECT ANIMAL_ID, NAME
+FROM ANIMAL_OUTS
+WHERE ANIMAL_ID NOT IN (SELECT ANIMAL_ID FROM ANIMAL_INS)
+ORDER BY 1, 2;
