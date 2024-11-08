@@ -4,40 +4,33 @@ import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int dp[];
+    static int n, dp[];
+    static boolean flag[];
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        int n = Integer.parseInt(br.readLine());
+        n = Integer.parseInt(br.readLine());
         int m = Integer.parseInt(br.readLine());
-        ArrayList<Integer> list = new ArrayList<>();
+        dp = new int[n+1];
+        flag = new boolean[n+1];
 
-        int st=1;
-        for (int i=1; i<=m; i++) {
+        for (int i=0; i<m; i++) {
             int num = Integer.parseInt(br.readLine());
-            list.add(num-st);
-            st = num+1;
+            flag[num] = true;
         }
-        list.add(n-st+1);
 
-        dp = new int[n+2];
-        dp[1]=1;
-        dp[2]=2;
-        int ret = 1;
-        for (int i : list) ret *= go(i);
-
-        bw.write(ret+"");
+        bw.write(go(1)+"");
         bw.flush();
         bw.close();
         br.close();
     }
-
     static int go(int num) {
-        if(num==0) return 1;
+        if(num>=n) return 1;
         if(dp[num]!=0) return dp[num];
-        dp[num] = go(num-1) + go(num-2);
+        if(flag[num]) return go(num+1);
+
+        if(!flag[num+1]) dp[num] += go(num+1) + go(num+2);
+        else dp[num] += go(num+1);
         return dp[num];
     }
-
-
 }
