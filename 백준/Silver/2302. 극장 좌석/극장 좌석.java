@@ -1,38 +1,43 @@
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
 public class Main {
-    static int n, m, dp[] = new int[41];
-    static boolean change[] = new boolean[41];
-    static ArrayList<Integer> list = new ArrayList<>();
+    static int dp[];
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        n = Integer.parseInt(br.readLine());
-        m = Integer.parseInt(br.readLine());
+        int n = Integer.parseInt(br.readLine());
+        int m = Integer.parseInt(br.readLine());
+        ArrayList<Integer> list = new ArrayList<>();
 
-        int prev = 0;
-        for (int i=0; i<m; i++) {
-            int temp = Integer.parseInt(br.readLine());
-            change[temp - 1] = true;
+        int st=1;
+        for (int i=1; i<=m; i++) {
+            int num = Integer.parseInt(br.readLine());
+            list.add(num-st);
+            st = num+1;
         }
+        list.add(n-st+1);
 
-        Arrays.fill(dp, -1);
+        dp = new int[n+2];
+        dp[1]=1;
+        dp[2]=2;
+        int ret = 1;
+        for (int i : list) ret *= go(i);
 
-        bw.write(go(0)+"");
+        bw.write(ret+"");
         bw.flush();
         bw.close();
         br.close();
     }
 
     static int go(int num) {
-        if(num >=n-1) return 1;
-        if(change[num]) return go(num+1);
-        if(dp[num]!=-1) return dp[num];
-
-        dp[num] = 0;
-        if(!change[num+1]) dp[num] += (go(num+2) + go(num+1));
-        else dp[num] += go(num+1);
-
+        if(num==0) return 1;
+        if(dp[num]!=0) return dp[num];
+        dp[num] = go(num-1) + go(num-2);
         return dp[num];
     }
+
+
 }
