@@ -1,29 +1,33 @@
 import java.io.*;
 import java.util.*;
+
 public class Main {
-    static int mod = 1000000007, max_n = 200001;
+    static final int MAX = 200001;
+    static final int MOD = 1000000007;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        int n = Integer.parseInt(br.readLine());
+
         long answer = 1;
-        Long arr[] = new Long[200002];
-        Arrays.fill(arr, 0l);
-        ArrayList<Long> tree_cnt = new ArrayList<>(List.of(arr));
-        ArrayList<Long> tree_sum = new ArrayList<>(List.of(arr));
+        long tree_cnt[] = new long[MAX+1];
+        long tree_sum[] = new long[MAX+1];
 
-        for (int i=0; i<n; i++) {
-            int num = Integer.parseInt(br.readLine())+1;
+        Arrays.fill(tree_cnt, 0);
+        Arrays.fill(tree_sum, 0);
 
-            if (i>0) {
-                long left = num * interval(tree_cnt, 1, num-1) - interval(tree_sum, 1, num-1);
-                long right = interval(tree_sum, num+1, max_n) - num * interval(tree_cnt, num+1, max_n);
+        int test = Integer.parseInt(br.readLine());
+        for (int t=0; t<test; t++) {
+            int n = Integer.parseInt(br.readLine())+1;
 
-                answer *= (left + right) % mod;
-                answer %= mod;
+            if (t>0) {
+                long left = n * interval(tree_cnt, 1, n-1) - interval(tree_sum, 1, n-1);
+                long right = interval(tree_sum, n+1, MAX) - n * interval(tree_cnt, n+1, MAX);
+
+                answer *= (left + right) % MOD;
+                answer %= MOD;
             }
-            update(tree_cnt, num, 1);
-            update(tree_sum, num, num);
+            update(tree_cnt, n, 1);
+            update(tree_sum, n, n);
         }
 
         bw.write(answer+"");
@@ -32,29 +36,23 @@ public class Main {
         br.close();
     }
 
-    static long prefix(ArrayList<Long> list, int n) { // 누적합 계산
+    static long prefix(long[] arr, int n) { // 누적함
         long ret = 0;
-        int i = n;
-        while (i>0) {
-            ret += list.get(i);
-            i -= (i & -i);
+        while ( n>0 ) {
+            ret += arr[n];
+            n -= (n & -n);
         }
-
         return ret;
     }
 
-    static long interval(ArrayList<Long> list, int start, int end) { // 구간합 계산
-        if (start > end) return 0;
-        return (prefix(list, end) - prefix(list, start-1));
+    static long interval(long[] arr, int start, int end) { // 구간합
+        return prefix(arr, end) - prefix(arr, start-1);
     }
 
-    static void update(ArrayList<Long> list, int n, long dif) { // 삽입
-        int i=n;
-        while (i<=max_n) {
-            long temp = list.get(i) + dif;
-            list.set(i, temp);
-            i += (i & -i);
+    static void update(long[] arr, int n, int dif) { // 값 추가
+        while ( n < MAX) {
+            arr[n] += dif;
+            n += (n&-n);
         }
     }
-
 }
