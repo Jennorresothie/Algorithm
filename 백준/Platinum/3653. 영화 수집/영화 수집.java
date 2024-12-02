@@ -1,57 +1,54 @@
 import java.io.*;
 import java.util.*;
+
 public class Main {
-    static int arr[] = new int[200002], limit;
+    static int DVD[] = new int[200002], limit;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringTokenizer st;
-
         int t = Integer.parseInt(br.readLine());
-        for (int i=0; i<t; i++) {
+        while (t-->0) {
             st = new StringTokenizer(br.readLine());
-            int n, m;
+            int n, m, index[] = new int[100001];
             n = Integer.parseInt(st.nextToken());
             m = Integer.parseInt(st.nextToken());
-            int[] movieIdx = new int[n+1];
             limit = n+m;
 
-            for (int j=1; j<=n; j++) {
-                movieIdx[j] = m+j;
-                update(movieIdx[j], 1);
+            for (int i=1; i<=n; i++) {
+                index[i] = m+i;
+                update(m+i, 1);
             }
 
             st = new StringTokenizer(br.readLine());
-            for (int j=0; j<m; j++) {
+            for (int i=0; i<m; i++) {
                 int temp = Integer.parseInt(st.nextToken());
-                int index = movieIdx[temp];
-
-                bw.write(prefix(index)-1+" ");
-                update(index, -1);
-                movieIdx[temp] = m-j;
-                update(movieIdx[temp], 1);
+                int ind = index[temp];
+                bw.write(sum(ind) - 1+" ");
+                update(ind, -1);
+                index[temp] = m-i;
+                update(m-i, 1);
             }
+            Arrays.fill(DVD, 0);
             bw.newLine();
-            Arrays.fill(arr, 0);
         }
+
         bw.flush();
         bw.close();
         br.close();
     }
-
-    static int prefix(int n) {
+    static void update(int n, int dif) {
+        while ( n<=limit ) {
+            DVD[n] += dif;
+            n += (n & -n);
+        }
+    }
+    static int sum(int n) {
         int ret = 0;
         while(n>0) {
-            ret += arr[n];
+            ret += DVD[n];
             n -= (n & -n);
         }
         return ret;
-    }
-    
-    static void update(int n, int dif) {
-        while (n <= limit) {
-            arr[n] += dif;
-            n += (n & -n);
-        }
     }
 }
